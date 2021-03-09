@@ -9,3 +9,9 @@ As the process for creating a new wheel file for use with python is fairly tedio
 
 https://drive.google.com/drive/folders/1W2yNGUshzrZwub7OPFGRMLMQvt-RluFZ?usp=sharing
 
+Installing the tensorflow package for python is a one step process:
+
+pip install <file>
+  
+We will include the sample script from the tensorflow wedsite description.
+ 
