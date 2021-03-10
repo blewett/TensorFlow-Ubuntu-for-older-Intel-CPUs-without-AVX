@@ -1,9 +1,9 @@
 # tensorflow-non-avx-ubuntu-20
-This github entry includes scripts and pointers to python wheel[s] file[s] for using TensorFlow on older Intel computers.  This work was processed using Ubuntu 20.04 and followed the instructins from the Tensorflow web site listed below:
+This github entry includes scripts and pointers to python wheel[s] file[s] for using TensorFlow on older Intel computers.  This work was processed using Ubuntu 20.04 and followed the instructions from the Tensorflow web site listed below:
 
   https://www.tensorflow.org/install/source
 
-This compilation disabled the Intel AVX op codes and specified the widely compaitible Intel architecture, core2.  Use the following gcc command to check your architecure:
+This compilation disabled the Intel AVX op codes and specified the widely compatible Intel architecture, core2.  Use the following gcc command to check your architecture:
 
   gcc -march=native -Q --help=target | grep march
 
@@ -11,7 +11,7 @@ The TensorFlow website instructions are very complete and can be completed easil
 
   https://drive.google.com/drive/folders/1W2yNGUshzrZwub7OPFGRMLMQvt-RluFZ?usp=sharing
 
-Installing the TensorFlow package for python using the TensorFLow wheel file is a one step process:
+Installing the TensorFlow package for python using the TensorFlow wheel file is a one step process:
 
 pip install <file>
   
