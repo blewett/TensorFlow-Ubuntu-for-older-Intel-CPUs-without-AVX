@@ -1,5 +1,5 @@
 # tensorflow-non-avx-ubuntu-20
-This github entry includes scripts and pointers to python wheel[s] file[s] for using TensorFlow on older Intel computers.  This work was processed using Ubuntu 20.04 and followed the instructions from the Tensorflow web site listed below:
+This github entry includes scripts and pointers to python wheel[s] file[s] for using TensorFlow on older Intel computers.  This work was processed using Ubuntu 20.04 and followed the instructions from the TensorFlow web site listed below:
 
   https://www.tensorflow.org/install/source
 
@@ -13,7 +13,7 @@ The TensorFlow website instructions are very complete and can be completed easil
 
 Installing the TensorFlow package for python using the TensorFlow wheel file is a one step process:
 
-pip install <file>
+pip install file
   
 We include a python script, Chollet_example.py, which includes the complete tutorial from the tensorflow wedsite:
  
