@@ -3,9 +3,11 @@ This github entry includes scripts and pointers to python wheel[s] file[s] for u
 
 https://www.tensorflow.org/install/source
 
-Those instructions are very complete and can be completed given some patience.
+The compilations disabl AVX and specify the widely compaitible Intel architecture, core2.  Use the following gcc command to check your architecure:
 
-As the process for creating a new wheel file for use with python is fairly tedious, a pointer to our wheel file is provided with a checksum script for verifying the file.
+gcc -march=native -Q --help=target
+
+The tensorflow website instructions are very complete and can be completed given some patience.  As the process for creating a new wheel file for use with python is fairly tedious, a pointer to our wheel file is provided with a checksum script for verifying the file.
 
 https://drive.google.com/drive/folders/1W2yNGUshzrZwub7OPFGRMLMQvt-RluFZ?usp=sharing
 
