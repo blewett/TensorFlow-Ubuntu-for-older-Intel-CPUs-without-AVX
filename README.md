@@ -15,9 +15,9 @@ Installing the TensorFlow package for python using the TensorFlow wheel file is 
 
 pip install file
   
-We include a python script, Chollet_example.py, which includes the complete tutorial from the tensorflow wedsite:
+We include a python script, Chollet_example.py, which includes the complete tutorial from the TensorFlow website:
  
   https://www.tensorflow.org/tutorials/keras/classification
  
-Running the Chollet python file is a quick way to test the Tensorflow install and familiarize yourself with the Tensorflow process.
+Running the Chollet python file is a quick way to test the TensorFlow install and familiarize yourself with the TensorFlow process.
  
