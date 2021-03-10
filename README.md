@@ -1,4 +1,4 @@
-# tensorflow-non-avx-ubuntu-20
+# TensorFlow Ubuntu for Older Intel CPUs
 This github entry includes scripts and pointers to python wheel[s] file[s] for using TensorFlow on older Intel computers.  This work was processed using Ubuntu 20.04 and followed the instructions from the TensorFlow web site listed below:
 
   https://www.tensorflow.org/install/source
