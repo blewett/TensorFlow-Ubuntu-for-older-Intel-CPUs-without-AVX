@@ -9,6 +9,8 @@ This compilation disabled the Intel AVX op codes and specified the widely compat
 
 The TensorFlow website instructions are very complete and can be completed easily - with some patience.  OK, the process for creating a new wheel file for use with python is fairly tedious.  We have a shell script with the complete set of instructions for compilation from the TensorFlow webpages.  The python program, section-shell.py, can be used to run the shell script.
 
+  python3 section-shell.py tensor-install-ubuntu.sh
+
 The following link is a pointer to the python wheel file that we produced and a checksum script to verify the file.
 
   https://drive.google.com/drive/folders/1W2yNGUshzrZwub7OPFGRMLMQvt-RluFZ?usp=sharing
