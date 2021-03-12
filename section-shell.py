@@ -44,9 +44,11 @@ def read_content(file):
 
 def find_longest_section_name(content):
     max = 0
+    print("sections:")
     for line in content:
         where = line.find(section_tag)
         if where == 0:
+            print("  " + line)
             line = line[section_tag_len:].strip()
             where = line.find(":")
             section = line[:where].strip()
