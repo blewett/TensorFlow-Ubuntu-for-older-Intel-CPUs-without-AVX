@@ -108,7 +108,7 @@ echo march=`gcc -march=native -Q --help=target | grep -v valid | grep march | se
 echo "The current recommended ation is to use -march=native, unless there is another specific need."
 
 # section 6a: prepare for ./configure
-march=`gcc -march=native -Q --help=target | grep -v valid | grep march | sed -e 's/ //g' -e 's/\t//g' -e 's/-march=//'`;echo "  The next section runs the ./configure script."; echo "  When ./configure asks for options enter: -march=native -Wno-sign-compare"; echo "  Say no to ROCm, CUDA, and all unless you plan to run with a CUDA board "; echo "  (you do not)."
+march=`gcc -march=native -Q --help=target | grep -v valid | grep march | sed -e 's/ //g' -e 's/\t//g' -e 's/-march=//'`;echo "  The next section runs the ./configure script."; echo "  When ./configure asks for options enter your choice for architecture: -march=<choice> -Wno-sign-compare"; echo "  Say no to ROCm, CUDA, and all unless you plan to run with a CUDA board "; echo "  (you do not)."
 
 # section 6b: run ./configure
 ./configure
