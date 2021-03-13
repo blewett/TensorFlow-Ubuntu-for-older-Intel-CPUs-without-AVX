@@ -11,7 +11,7 @@ This compilation disabled the Intel AVX op codes and specified the widely compat
   gcc -march=native -Q --help=target | grep march
 ```
 
-The TensorFlow website instructions are very complete and can be completed easily - with some patience.  OK, the process for creating a new wheel file for use with python is fairly tedious.  We have a shell script with the complete set of instructions for compilation from the TensorFlow webpages.  The python program, section-shell.py, can be used to run the shell script.
+The TensorFlow website instructions are very complete and can be completed easily - with some patience.  OK, the process for creating a new wheel file for use with python is fairly tedious.  We have a shell script with the complete set of instructions for compilation from the TensorFlow webpages.  The python program, section-shell.py, can be used to run the shell script in manageable sections.
 
 ```
   python3 section-shell.py tensor-install-ubuntu.sh
