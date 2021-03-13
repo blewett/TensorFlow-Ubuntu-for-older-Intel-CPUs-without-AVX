@@ -26,7 +26,7 @@ The following link is a pointer to the python wheel file that we produced and a 
 Installing the TensorFlow package for python using the TensorFlow wheel file is a one step process:
 
 ```
-pip install "wheel file"
+  pip install "wheel file"
 ```
 
 We include a python script, Chollet_example.py, which includes the complete tutorial from the TensorFlow website:
@@ -36,4 +36,9 @@ We include a python script, Chollet_example.py, which includes the complete tuto
 ```
 
 Running the Chollet python file is a quick way to test the TensorFlow install and familiarize yourself with the TensorFlow process.
- 
+
+```
+  python3 Chollet_example.py
+```
+
+
