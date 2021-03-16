@@ -1,5 +1,5 @@
 """
-  section-shell.py: Original work Copyright (C) 2021 by Doug Blewett
+  section-shell.py: Original work Copyright (C) 2021 by Megan Blewett
 
 MIT License
 
@@ -42,31 +42,41 @@ def read_content(file):
     content = [line.strip() for line in content]
     return content
 
-def find_longest_section_name(content):
+def find_section_info(content):
+    sections = []
     max = 0
-    print("sections:")
+    index = 0
     for line in content:
         where = line.find(section_tag)
         if where == 0:
-            print("  " + line)
             line = line[section_tag_len:].strip()
             where = line.find(":")
             section = line[:where].strip()
+            sections.append([section,index])
             length = len(section)
             if length > max:
                 max = length
-    return max
+        index += 1
+    return max, sections
 
-def main(filename, skip_section, skip_sub):
+def list_content(content, sections):
+    for sect in sections:
+        print(content[sect[1]])
+
+def main(filename, skip_section, skip_command_number):
     content = read_content(sys.argv[1])
-    if len(content) == 0:
+    content_length = len(content)
+    if content_length == 0:
         print(prog + ": the file " + sys.argv[1] + " has no content lines")
         exit(1)
 
-    base_indent_len = find_longest_section_name(content)
-    if base_indent_len == 0:
+    (base_indent_len,sections) = find_section_info(content)
+    if len(sections) == 0:
         print(prog + ": the file " + sys.argv[1] + " has no section entries")
         exit(1)
+
+    list_content(content, sections)
+    print("")
 
     base_indent = " " * base_indent_len
 
@@ -75,19 +85,32 @@ def main(filename, skip_section, skip_sub):
     execute = False
     section = ""
     clear_next_section = False
-    sub = 0
-    for line in content:
+    command_number = 0
+    index = 0
+    while index < content_length:
+        #
+        # process a line at a time
+        #
+        line = content[index]
+
         # skip blank lines
         if len(line) == 0:
+            index += 1
             continue
 
-        # look for section headers at the front of the line
-        where = line.find(section_tag)
-        if where == 0:
-            sub = 0
-            line = line[section_tag_len:].strip()
-            where = line.find(":")
-            section = line[:where].strip()
+        # look for section headers
+        found_sect = None
+        for sect in sections:
+            if index == sect[1]:
+                found_sect = sect
+                break
+
+        #
+        # process a section header
+        #
+        if found_sect != None:
+            command_number = 0
+            section = sect[0]
             indent = " " * (base_indent_len - len(section))
 
             cd_string = ""
@@ -99,33 +122,34 @@ def main(filename, skip_section, skip_sub):
             # are we skipping sections
             if clear_next_section == True:
                 skip_section = ""
+                skip_command_number = 0
                 clear_next_section = False
 
             if skip_section != "":
                 if skip_section != section:
-                    print("* " + indent + line)
+                    print(content[index])
                     print("skipped")
+                    index += 1
                     continue
 
                 clear_next_section = True
 
-                if skip_sub > sub:
-                    print("")
-                    print("skipping until " +
-                          str(section) + "." + str(skip_sub))
+                if skip_command_number > command_number:
+                    print("skipping until section " + str(section) +
+                          " and command number " + str(skip_command_number))
                 else:
                     skip_section = ""
 
             execute = False
             skip = False
             while True:
-                print("")
-                print("* " + indent + line)
-                text = input("    e(xecute), s(kip), q(uit)?")
+                print(content[index])
+                text = input("    e(xecute), s(kip), l(list), j(jump), q(uit)?").strip()
 
-                if text[0] == 'q':
+                if text == 'q':
                     exit(0)
-                if text[0] == 'e' or text[0] == 'x':
+
+                if text == 'e' or text == 'x':
                     execute = True
                     if cd_string != "":
                         try:
@@ -137,46 +161,100 @@ def main(filename, skip_section, skip_sub):
 
                     cd_string = ""
                     break
-                if text[0] == 's':
+
+                if text == 's':
                     skip = True
                     break
 
+                # jump
+                txt = text.split(" ")
+                if txt[0] == 'j':
+                    length = len(txt)
+                    if length < 2 or length > 3:
+                        print("the jump command includes the section and the optional command number")
+                        continue
+                    # check the section
+                    if length > 1:
+                        found = False
+                        for sect in sections:
+                            if sect[0] == txt[1]:
+                                section = sect[0]
+                                skip_section = sect[0]
+                                skip_command_number = 0
+                                index = sect[1] - 1
+                                found = True
+                                break
+                        if found == False:
+                            print("the jump command section is not a section: " + txt[1])
+                            continue
+                            
+                        # check the command_number
+                        skip_command_number = 0
+                        if length == 3:
+                            if txt[2].isdigit() == False:
+                                print("the jump command number must be an integer: " + txt[2])
+                                continue;
+                            skip_command_number = int(txt[2])
+
+                        if skip_command_number < 1:
+                            print("jumping to section " + skip_section)
+                        else:
+                            print("jumping to section " + skip_section +
+                                  "  and command_number" + str(skip_command_number))
+                        break
+
+                # list
+                if text == 'l':
+                    list_content(content, sections)
+                    continue
+
                 print("")
 
+            index += 1
             continue
 
+        #
+        # end of processing a section header
+        #
         if section == "":
+            index += 1
             continue
 
         if line[0] != '#':
-            sub += 1
+            command_number += 1
 
         if skip == True:
+            index += 1
             continue
 
         if skip_section != "" and skip_section != section:
+            index += 1
             continue
 
         indent = " " * (base_indent_len - len(section)) + section
         if line[0] == '#':
-            print("    " + base_indent + line)
+            print(line)
+            index += 1
             continue
         else:
-            print(indent + "." + str(sub) + ": " + line)
+            print(indent + "(" + str(command_number) + "): " + line)
 
         if skip_section != "":
-            if sub >= skip_sub:
+            if command_number >= skip_command_number:
                 skip_section = ""
             else:
                 print("skipped")
                 print("")
+                index += 1
                 continue
 
         if execute == True:
-            print("")
             os.system(line)
             print("")
+            index += 1
             continue
+
+        index += 1
 
     print("done")
 # end of main
@@ -202,16 +280,17 @@ def help(prog):
     print("")
     print("   section-shell.py will display the following for that section:")
     print("")
-    print("     *  1: install python3 and build utilities")
-    print("     e(xecute), s(kip), q(uit)?")
+    print("   # section 1: install python3 and build utilities")
+
+    print("      e(xecute), s(kip), l(list), j(jump), q(uit)?")
     print("")
     print("   The user may elect to execute or skip the shell commands in a section.")
     print("   There may be multiple commands in each section.  The commands are")
     print("   numbered as they are executed.")
     print("")
-    print("   The arguments for section-shell.py are \"filename [section] [sub command #]\".")
-    print("   The section and the sub number are optional and if provided will result in")
-    print("   processing starting in the named section and at the sub number (shell")
+    print("   The arguments for section-shell.py are \"filename [section] [command_number]\".")
+    print("   The section and the command_number are optional and if provided will result")
+    print("   in processing starting in the named section and at the command_number (shell")
     print("   command).")
 
 #
@@ -221,13 +300,13 @@ argc = len(sys.argv)
 prog = sys.argv[0]
 
 if (argc == 1 or argc > 4):
-    print(prog + ": " + prog + " filename [section] [sub command #]")
+    print(prog + ": " + prog + " filename [section] [command_number]")
     print(prog + ":   the first argument should be a filename.")
     exit(1)
 
 filename = ""
 section = ""
-sub = 0
+command_number = 0
 
 for arg in sys.argv:
     if arg == "?" or arg == "-?" or arg == "-h" or arg == "help":
@@ -241,12 +320,12 @@ if (argc >= 3):
     section = sys.argv[2]
 
 if (argc == 4):
-    sub = sys.argv[3]
-    if sub.isdigit() == False:
-        print(prog + ": " + prog + " filename [section] [sub command #]")
-        print(prog + ":   the sub command # must be a number.")
+    command_number_s = sys.argv[3]
+    if command_number_s.isdigit() == False:
+        print(prog + ": " + prog + " filename [section] [command_number]")
+        print(prog + ":   the command_number must be a number.")
         exit(1)
-    sub = int(sub)
+    command_number = int(command_number_s)
 
-main(filename, section, sub)
+main(filename, section, command_number)
 
