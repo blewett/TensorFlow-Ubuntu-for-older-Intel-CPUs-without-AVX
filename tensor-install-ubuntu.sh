@@ -18,8 +18,8 @@
 # 
 # section 1: install python3 and build utilities
 sudo apt install python3-dev python3-pip
-
-pip3 install -U --user pip numpy wheel
+sudo pip3 uninstall numpy wheel
+sudo pip3 install numpy wheel
 pip3 install -U --user keras_preprocessing --no-deps
 pip3 install testresources
 pip3 install matplotlib
@@ -108,7 +108,7 @@ echo march=`gcc -march=native -Q --help=target | grep -v valid | grep march | se
 echo "The current recommended ation is to use -march=native, unless there is another specific need."
 
 # section 6a: prepare for ./configure
-march=`gcc -march=native -Q --help=target | grep -v valid | grep march | sed -e 's/ //g' -e 's/\t//g' -e 's/-march=//'`;echo "  The next section runs the ./configure script."; echo "  When ./configure asks for options enter your choice for architecture: -march=<choice> -Wno-sign-compare"; echo "  Say no to ROCm, CUDA, and all unless you plan to run with a CUDA board "; echo "  (you do not)."
+march=`gcc -march=native -Q --help=target | grep -v valid | grep march | sed -e 's/ //g' -e 's/\t//g' -e 's/-march=//'`;echo The next section runs the ./configure script; echo "  when ./configure asks for options enter: -march=$march -Wno-sign-compare"; echo "  Say no to ROCm, CUDA, and all unless you plan to run with a CUDA board "; echo "  (you do not)"
 
 # section 6b: run ./configure
 ./configure
@@ -123,7 +123,7 @@ bazel build --verbose_failures --config=opt --config=noaws --config=nogcp --conf
 ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
 
 # section 10: install the newly created wheel file
-pip3 install tensorflow-2.5.0-cp38-cp38-linux_x86_64.whl 
+pip3 install /tmp/tensorflow_pkg/*.whl
 
 # section 11: stop here
 #
